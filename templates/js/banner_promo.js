@@ -71,4 +71,26 @@
     // Run on load to set initial state (e.g. if validation failed and we have old input)
     toggleVoucher();
   });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const tipePromoSelect = document.getElementById("tipe_promo");
+    const voucherContainer = document.getElementById("voucher_container");
+    const voucherSelect = document.getElementById("voucher_id");
+
+    function toggleVoucher() {
+      if (tipePromoSelect.value === "Voucher") {
+        voucherContainer.style.display = "block";
+        voucherSelect.setAttribute("required", "required");
+      } else {
+        voucherContainer.style.display = "none";
+        voucherSelect.removeAttribute("required");
+        voucherSelect.value = "";
+      }
+    }
+
+    tipePromoSelect.addEventListener("change", toggleVoucher);
+
+    // Run on load to set initial state
+    toggleVoucher();
+  });
 })();
