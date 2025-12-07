@@ -3,6 +3,17 @@ document.addEventListener("DOMContentLoaded", function () {
   const searchModalEl = document.getElementById("searchModal");
   const searchInput = document.getElementById("searchInput");
   const resultsContainer = document.getElementById("searchResults");
+
+  // Check if elements exist
+  if (!searchModalEl || !searchInput || !resultsContainer) {
+    console.error("Find Menu: Required elements not found", {
+      searchModalEl: !!searchModalEl,
+      searchInput: !!searchInput,
+      resultsContainer: !!resultsContainer,
+    });
+    return;
+  }
+
   const bsModal = new bootstrap.Modal(searchModalEl);
 
   let menuItems = [];
@@ -20,8 +31,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Cek 2: Apakah di dalam Sidebar Accordion (Collapse)?
     const collapseMenu = link.closest(".collapse");
-    if (collapseMenu && link.closest("#sidebar-wrapper")) {
-      // Ganti ID sesuai sidebar anda
+    if (
+      collapseMenu &&
+      (link.closest("#sidebar-wrapper") || link.closest(".sidebar-menu"))
+    ) {
       // Cari tombol yang membuka collapse ini
       const collapseId = collapseMenu.id;
       const trigger = document.querySelector(
@@ -32,7 +45,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Cek 3: Tentukan Parent Utama
     if (link.closest(".navbar")) return "Navbar";
-    if (link.closest("#sidebar-wrapper")) return "Sidebar"; // Ganti ID sesuai sidebar anda
+    if (link.closest("#sidebar-wrapper") || link.closest(".sidebar-menu"))
+      return "Sidebar";
 
     return "General";
   }
@@ -45,8 +59,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // 1. .navbar-nav .nav-link (Link Navbar)
     // 2. .dropdown-item (Submenu Navbar)
     // 3. #sidebar-wrapper a (Semua link di dalam Sidebar)
+    // 4. .sidebar-menu a (Semua link di dalam sidebar-menu)
     const selectors =
-      ".navbar-nav .nav-link, .dropdown-menu .dropdown-item, #sidebar-wrapper a";
+      ".navbar-nav .nav-link, .dropdown-menu .dropdown-item, #sidebar-wrapper a, .sidebar-menu a";
 
     const links = document.querySelectorAll(selectors);
 
@@ -118,16 +133,20 @@ document.addEventListener("DOMContentLoaded", function () {
       (event.ctrlKey || event.metaKey) &&
       (event.key === "f" || event.key === "k")
     ) {
+      console.log("Find Menu: Hotkey pressed", event.key);
       event.preventDefault();
       indexMenuItems(); // Re-index saat dibuka untuk memastikan data terbaru
       bsModal.show();
     }
   });
 
-  // 5. AUTO FOCUS
+  // 5. AUTO FOCUS - Delay to allow Bootstrap to complete aria-hidden update
   searchModalEl.addEventListener("shown.bs.modal", function () {
     searchInput.value = "";
     resultsContainer.innerHTML = "";
-    searchInput.focus();
+    // Small delay to ensure Bootstrap has removed aria-hidden
+    setTimeout(() => {
+      searchInput.focus();
+    }, 100);
   });
 });
