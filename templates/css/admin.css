@@ -98,7 +98,6 @@ body {
 .sidebar.collapsed .menu-link span,
 .sidebar.collapsed .menu-title,
 .sidebar.collapsed .fa-chevron-down,
-.sidebar.collapsed .sidebar-header .brand img,
 .sidebar.collapsed .collapse-text {
   opacity: 0;
   visibility: hidden;
@@ -126,6 +125,52 @@ body {
 
 .sidebar.collapsed .collapse-icon {
   margin-right: 0;
+}
+
+/* Adjust sidebar header for collapsed state */
+.sidebar.collapsed .sidebar-header {
+  padding: 0 0.5rem;
+}
+
+/* Ensure logo remains visible when collapsed */
+.sidebar.collapsed .sidebar-header .brand {
+  display: flex !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  justify-content: center;
+  width: 100%;
+}
+
+.sidebar.collapsed .sidebar-header .brand img {
+  opacity: 1 !important;
+  visibility: visible !important;
+  width: auto !important;
+  height: 24px !important;
+  max-width: 60px !important;
+  overflow: visible !important;
+}
+
+/* Remove margin from submenu items when collapsed */
+.sidebar.collapsed .menu-item.ms-3 {
+  margin-left: 1rem !important;
+}
+
+/* Hide text in submenu items when collapsed, show only icons */
+.sidebar.collapsed .menu-item.ms-3 .menu-link {
+  justify-content: center;
+  padding: 0.75rem 0.5rem;
+}
+
+.sidebar.collapsed .menu-item.ms-3 .menu-link i {
+  margin-right: 0;
+}
+
+/* Hide span text (same technique as main menu) */
+.sidebar.collapsed .menu-item.ms-3 .menu-link span {
+  opacity: 0;
+  visibility: hidden;
+  width: 0;
+  overflow: hidden;
 }
 
 /* Adjust main content when sidebar is collapsed */
