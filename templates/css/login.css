@@ -123,17 +123,45 @@ body {
   box-shadow: 0 0 0 0.2rem rgba(14, 165, 233, 0.25);
 }
 
-.input-group-text {
+/* Input group - first child (icon) */
+.input-group > .input-group-text:first-child {
   background: #f8fafc;
   border: 2px solid #e5e7eb;
   border-right: none;
-  border-radius: 12px 0 0 12px;
+  border-radius: 12px 0 0 12px !important;
   color: #6b7280;
 }
 
-.input-group .form-control {
+/* Input group - middle element (input field) */
+.input-group > .form-control {
   border-left: none;
-  border-radius: 0 12px 12px 0;
+  border-radius: 0 !important;
+}
+
+/* Input group with only 2 elements - last input should be rounded on right */
+.input-group > .form-control:last-child {
+  border-radius: 0 12px 12px 0 !important;
+}
+
+/* Input group with 3 elements - input in middle should have no right border */
+.input-group > .form-control:not(:last-child) {
+  border-right: none;
+}
+
+/* Toggle password button - last child in password input group */
+.input-group > .input-group-text#togglePassword {
+  background: #f8fafc;
+  border: 2px solid #e5e7eb;
+  border-left: none;
+  border-radius: 0 12px 12px 0 !important;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.input-group > .input-group-text#togglePassword:hover {
+  background: #e5e7eb;
+  color: #374151;
 }
 
 .btn-login {
