@@ -182,4 +182,26 @@ $(document).ready(function () {
   $("#negara_id, #kota_id").on("change", function () {
     $(this).removeClass("is-invalid");
   });
+
+  const $kode_iata = $("#kode_iata");
+  $kode_iata.on("input", function () {
+    const nilai = $(this).val();
+
+    // Limit to 3 characters and convert to uppercase
+    if (nilai.length > 3) {
+      Swal.fire({
+        icon: "warning",
+        title: "Peringatan",
+        text: "Kode IATA tidak boleh lebih dari 3 karakter",
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+      $(this).val(nilai.slice(0, 3).toUpperCase());
+    } else {
+      // Auto uppercase
+      $(this).val(nilai.toUpperCase());
+    }
+  });
 });
