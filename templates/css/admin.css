@@ -447,9 +447,51 @@ body {
 
 /* Search Modal Styles */
 #searchResults .list-group-item.active {
-    background-color: #0d6efd; /* BS Primary */
-    border-color: #0d6efd;
+  background-color: #0d6efd; /* BS Primary */
+  border-color: #0d6efd;
 }
 #searchResults .small {
-    opacity: 0.7;
+  opacity: 0.7;
+}
+
+/* Breadcrumb Styles */
+nav[aria-label="breadcrumb"] {
+  margin-bottom: 1.5rem;
+}
+
+.breadcrumb {
+  background-color: white;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  align-items: center;
+}
+
+.breadcrumb-item {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.breadcrumb-item a {
+  color: #64748b;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.breadcrumb-item a:hover {
+  color: var(--primary-color);
+}
+
+.breadcrumb-item.active {
+  color: var(--dark-color);
+  font-weight: 600;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  color: #cbd5e1;
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  content: "\f054"; /* chevron-right */
+  font-size: 0.75rem;
+  padding-top: 2px;
 }
