@@ -4,6 +4,17 @@
  */
 
 // Toggle Sidebar Collapse (Desktop)
+// Apply collapsed state immediately to prevent FOUC (Flash of Unstyled Content)
+(function () {
+  try {
+    if (localStorage.getItem("sidebarCollapsed") === "true") {
+      document.getElementById("sidebar").classList.add("collapsed");
+    }
+  } catch (e) {
+    console.error("Error restoring sidebar state:", e);
+  }
+})();
+
 function toggleSidebar(event) {
   event.preventDefault();
   const sidebar = document.getElementById("sidebar");
