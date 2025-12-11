@@ -4,17 +4,6 @@
  */
 
 // Toggle Sidebar Collapse (Desktop)
-// Apply collapsed state immediately to prevent FOUC (Flash of Unstyled Content)
-(function () {
-  try {
-    if (localStorage.getItem("sidebarCollapsed") === "true") {
-      document.getElementById("sidebar").classList.add("collapsed");
-    }
-  } catch (e) {
-    console.error("Error restoring sidebar state:", e);
-  }
-})();
-
 function toggleSidebar(event) {
   event.preventDefault();
   const sidebar = document.getElementById("sidebar");
@@ -38,15 +27,6 @@ function toggleSidebar(event) {
 }
 
 $(document).ready(function () {
-  // Restore sidebar icon state
-  const isCollapsed = localStorage.getItem("sidebarCollapsed") === "true";
-  if (isCollapsed) {
-    const icon = document.querySelector(".collapse-icon");
-    if (icon) {
-      icon.style.transform = "rotate(180deg)";
-    }
-  }
-
   // Process Flash Messages from Window Object
   if (typeof window.flashData !== "undefined") {
     processFlashMessages(window.flashData);
