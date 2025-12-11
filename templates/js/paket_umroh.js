@@ -46,9 +46,11 @@ $(document).ready(function () {
     if (n === totalTabs - 1) {
       $("#next-tab").addClass("d-none");
       $("#submit-btn").removeClass("d-none");
+      $("#btn-save-draft").removeClass("d-none");
     } else {
       $("#next-tab").removeClass("d-none");
       $("#submit-btn").addClass("d-none");
+      $("#btn-save-draft").addClass("d-none");
     }
   }
 
@@ -466,6 +468,15 @@ $(document).ready(function () {
   $("#muthawwif_foto").on("change", previewMuthawwifPhoto);
 
   // Note: Fasilitas starts empty - user clicks button to add
+
+  // Handle Status Button Clicks
+  $("#btn-save-draft").on("click", function () {
+    $("#status_draft").prop("checked", true);
+  });
+
+  $("#submit-btn").on("click", function () {
+    $("#status_published").prop("checked", true);
+  });
 });
 
 $(document).ready(function () {
