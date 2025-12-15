@@ -253,6 +253,7 @@ body {
 
 .content-wrapper {
   padding: 2rem;
+  padding-top: 0.3rem;
 }
 
 .page-header {
