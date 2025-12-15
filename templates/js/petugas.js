@@ -1,11 +1,11 @@
 $(document).ready(function () {
   // Form submission confirmation
-  $("#formJamaah button[type='submit']").on("click", function (e) {
+  $("#formPetugas button[type='submit']").on("click", function (e) {
     e.preventDefault();
 
     Swal.fire({
       title: "Simpan Perubahan?",
-      text: "Anda akan menyimpan perubahan pada data Jamaah ini.",
+      text: "Anda akan menyimpan perubahan pada data Petugas ini.",
       icon: "question",
       showCancelButton: true,
       confirmButtonText: "Ya, Simpan",
@@ -18,7 +18,7 @@ $(document).ready(function () {
       buttonsStyling: false,
     }).then((result) => {
       if (result.isConfirmed) {
-        $("#formJamaah").submit();
+        $("#formPetugas").submit();
       }
     });
   });
