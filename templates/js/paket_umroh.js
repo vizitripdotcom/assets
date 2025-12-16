@@ -141,6 +141,16 @@ $(document).ready(function () {
     itineraryCount = $(".itinerary-item").length;
   }
 
+  // Renumber Refund Policy
+  function renumberRefundPolicy() {
+    $(".refund-policy-item").each(function (index) {
+      const policyNumber = index + 1;
+      $(this).find(".accordion-button").text(`Kebijakan #${policyNumber}`);
+      $(this).attr("data-index", index);
+    });
+    refundPolicyCount = $(".refund-policy-item").length;
+  }
+
   // Add Refund Policy
   function addRefundPolicy() {
     const $container = $("#refundAccordion");
@@ -458,6 +468,7 @@ $(document).ready(function () {
 
   $(document).on("click", ".btn-remove-refund", function () {
     $(this).closest(".refund-policy-item").remove();
+    renumberRefundPolicy();
   });
 
   $(document).on("click", ".btn-remove-jadwal", function () {
