@@ -112,15 +112,21 @@ $(document).ready(function () {
     const html = `
             <div class="card mb-3 itinerary-item" data-index="${index}">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <span>Hari ${dayNumber}</span>
-                    <button type="button" class="btn btn-sm btn-danger btn-remove-itinerary">
+                    <div class="d-flex align-items-center gap-2 flex-grow-1">
+                        <span class="fw-bold">Hari ${dayNumber}</span>
+                        <input type="text" 
+                              class="form-control" 
+                              name="itinerary[${index}][hari_header]" 
+                              placeholder="Keterangan Kegiatan" 
+                              required>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-danger btn-remove-itinerary ms-2">
                         <i class="fas fa-trash"></i> Hapus
                     </button>
                 </div>
                 <div class="card-body">
                     <input type="hidden" name="itinerary[${index}][hari]" value="${dayNumber}">
-                    <textarea class="form-control" name="itinerary[${index}][deskripsi]" 
-                              rows="3" placeholder="Deskripsi aktivitas hari ${dayNumber}..." required></textarea>
+                    <textarea class="form-control" name="itinerary[${index}][deskripsi]" rows="3" placeholder="Deskripsi aktivitas hari ${dayNumber}..." required></textarea>
                 </div>
             </div>
         `;
