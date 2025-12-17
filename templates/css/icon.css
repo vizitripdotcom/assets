@@ -1,0 +1,34 @@
+.icon-article {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  background: url("../img/Menus/article.svg") no-repeat center / contain;
+}
+
+.icon-catalog {
+  background: url("../img/Menus/catalog.svg") no-repeat center / contain;
+}
+
+.icon-dashboard {
+  background: url("../img/Menus/dashboard.svg") no-repeat center / contain;
+}
+
+.icon-data {
+  background: url("../img/Menus/data.svg") no-repeat center / contain;
+}
+
+.icon-master-data {
+  background: url("../img/Menus/master-data.svg") no-repeat center / contain;
+}
+
+.icon-notification {
+  background: url("../img/Menus/notification.svg") no-repeat center / contain;
+}
+
+.icon-promosi {
+  background: url("../img/Menus/promosi.svg") no-repeat center / contain;
+}
+
+.icon-transaksi {
+  background: url("../img/Menus/transaksi.svg") no-repeat center / contain;
+}
