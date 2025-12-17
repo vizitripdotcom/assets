@@ -179,6 +179,9 @@ $(document).ready(function () {
                             <textarea class="form-control" name="refund[${index}][detail_kebijakan]" 
                                       rows="4" placeholder="Jelaskan detail kebijakan..." required></textarea>
                         </div>
+                        <button type="button" class="btn btn-sm btn-outline-info me-2 btn-copy-template">
+                            <i class="fas fa-copy"></i> Copy dari Template
+                        </button>
                         <button type="button" class="btn btn-sm btn-danger btn-remove-refund">
                             <i class="fas fa-trash"></i> Hapus Kebijakan
                         </button>
@@ -455,6 +458,146 @@ $(document).ready(function () {
   $("#add-itinerary").off("click").on("click", addItinerary);
   $("#add-refund-policy").off("click").on("click", addRefundPolicy);
   $("#add-jadwal").off("click").on("click", addJadwal);
+
+  // Copy from Template Button (inside accordion items)
+  $(document).on("click", ".btn-copy-template", function () {
+    const $currentAccordionItem = $(this).closest(".refund-policy-item");
+    // Store reference to current item for later use
+    $("#templateModal").data("targetAccordionItem", $currentAccordionItem);
+
+    // Show the modal
+    const modal = new bootstrap.Modal(document.getElementById("templateModal"));
+    modal.show();
+  });
+
+  // Template Selection Handler
+  $(document).on("click", ".template-item", function () {
+    const templateData = $(this).data("template");
+    const $targetItem = $("#templateModal").data("targetAccordionItem");
+
+    if (!templateData || !templateData.data) {
+      alert("Template data tidak valid");
+      return;
+    }
+
+    // If we have a target accordion item, copy ALL items into ONE field
+    if ($targetItem && $targetItem.length) {
+      // Use template header as the title
+      $targetItem
+        .find("input[name*='judul_kebijakan']")
+        .val(templateData.header || "");
+
+      // Combine ALL descriptions into a numbered list
+      const combinedDescription = templateData.data
+        .map((item) => {
+          const number = item.title || "";
+          const desc = item.description || "";
+          return `${number}. ${desc}`;
+        })
+        .join("\n\n");
+
+      $targetItem
+        .find("textarea[name*='detail_kebijakan']")
+        .val(combinedDescription);
+
+      // Show success message
+      if (typeof Swal !== "undefined") {
+        Swal.fire({
+          icon: "success",
+          title: "Berhasil!",
+          text: `${templateData.data.length} item berhasil di-copy dari template "${templateData.header}"`,
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      }
+    } else {
+      // No target item, replace all (fallback behavior)
+      $("#refundAccordion").empty();
+      refundPolicyCount = 0;
+
+      // Create refund policy items from template data
+      templateData.data.forEach((item, index) => {
+        const policyIndex = refundPolicyCount++;
+
+        const html = `
+            <div class="accordion-item refund-policy-item" data-index="${policyIndex}">
+                <h2 class="accordion-header" id="refund-heading-${policyIndex}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                            data-bs-target="#refund-collapse-${policyIndex}">
+                        Kebijakan #${policyIndex + 1}
+                    </button>
+                </h2>
+                <div id="refund-collapse-${policyIndex}" class="accordion-collapse collapse" 
+                     data-bs-parent="#refundAccordion">
+                    <div class="accordion-body">
+                        <div class="mb-3">
+                            <label class="form-label">Judul Kebijakan</label>
+                            <input type="text" class="form-control" name="refund[${policyIndex}][judul_kebijakan]" 
+                                   value="${
+                                     item.title || ""
+                                   }" placeholder="Contoh: Pembatalan H-30" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Detail Kebijakan</label>
+                            <textarea class="form-control" name="refund[${policyIndex}][detail_kebijakan]" 
+                                      rows="4" placeholder="Jelaskan detail kebijakan..." required>${
+                                        item.description || ""
+                                      }</textarea>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-info me-2 btn-copy-template">
+                            <i class="fas fa-copy"></i> Copy dari Template
+                        </button>
+                        <button type="button" class="btn btn-sm btn-danger btn-remove-refund">
+                            <i class="fas fa-trash"></i> Hapus Kebijakan
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        $("#refundAccordion").append(html);
+      });
+
+      // Show success message
+      if (typeof Swal !== "undefined") {
+        Swal.fire({
+          icon: "success",
+          title: "Berhasil!",
+          text: `${templateData.data.length} kebijakan berhasil di-copy dari template "${templateData.header}"`,
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      }
+    }
+
+    // Close modal properly and clean up
+    const modalElement = document.getElementById("templateModal");
+    const modal = bootstrap.Modal.getInstance(modalElement);
+    if (modal) {
+      modal.hide();
+
+      // Wait for modal to finish hiding, then cleanup
+      $(modalElement).one("hidden.bs.modal", function () {
+        // Remove any leftover backdrops
+        $(".modal-backdrop").remove();
+        // Remove modal-open class from body
+        $("body").removeClass("modal-open");
+        // Reset body styles
+        $("body").css("overflow", "");
+        $("body").css("padding-right", "");
+
+        // Clear the stored reference
+        $("#templateModal").removeData("targetAccordionItem");
+      });
+    } else {
+      // Fallback cleanup if modal instance not found
+      $(".modal-backdrop").remove();
+      $("body").removeClass("modal-open");
+      $("body").css("overflow", "");
+      $("body").css("padding-right", "");
+      $("#templateModal").removeData("targetAccordionItem");
+    }
+  });
 
   // Delegated remove events
   $(document).on("click", ".btn-remove-fasilitas", function () {
