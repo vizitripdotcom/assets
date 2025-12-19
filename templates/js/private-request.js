@@ -96,3 +96,20 @@ function updateStatus(id, status) {
     }
   });
 }
+
+function confirmDelete(id) {
+  Swal.fire({
+    title: "Hapus Request?",
+    text: "Data yang dihapus tidak dapat dikembalikan!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Ya, Hapus",
+    cancelButtonText: "Batal",
+    confirmButtonColor: "#d33",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      window.location.href =
+        baseUrl + "/transaksi/private-request/delete/" + id;
+    }
+  });
+}
