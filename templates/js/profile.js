@@ -36,11 +36,17 @@ $(document).ready(function () {
           return meta.row + meta.settings._iDisplayStart + 1;
         },
       },
+      {
+        data: "route",
+        name: "user_apps_activity.route",
+        render: function (data, type, row) {
+          return '<span class="badge bg-info">' + data + "</span>";
+        },
+      },
       { data: "route", name: "user_apps_activity.route" },
       { data: "method", name: "user_apps_activity.method" },
       { data: "browser", name: "user_apps_activity.browser" },
       { data: "platform", name: "user_apps_activity.platform" },
-      { data: "isAjax", name: "user_apps_activity.is_ajax" },
       { data: "create_date", name: "user_apps_activity.create_date" },
     ],
     responsive: true,
