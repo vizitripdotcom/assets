@@ -275,45 +275,38 @@ $(document).ready(function () {
     }
   }
 
-  // Banner Image Preview
-  $("#banner_images").change(function () {
-    const files = this.files;
-    const thumbnailContainer = $("#thumbnail-container");
-    const mainBannerImg = $("#main-banner-img");
-    const mainBannerPlaceholder = $("#main-banner-placeholder");
+  // Banner Upload - Multiple Images with Grid Layout
+  let bannerImages = {}; // Store images by index
+  let currentUploadIndex = null;
 
-    thumbnailContainer.empty();
+  // Click handler for upload boxes
+  $(document).on("click", ".upload-box", function () {
+    currentUploadIndex = $(this).data("index");
+    $("#banner_images_input").click();
+  });
 
-    if (files && files.length > 0) {
-      // Show first image as main
-      const firstReader = new FileReader();
-      firstReader.onload = function (e) {
-        mainBannerImg.attr("src", e.target.result).show();
-        mainBannerPlaceholder.hide();
+  // Handle file selection
+  $("#banner_images_input").on("change", function (e) {
+    const file = e.target.files[0];
+
+    if (file && currentUploadIndex !== null) {
+      // Store the file
+      bannerImages[currentUploadIndex] = file;
+
+      // Show preview
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const $box = $(`.upload-box[data-index="${currentUploadIndex}"]`);
+        $box
+          .find(".banner-preview")
+          .attr("src", e.target.result)
+          .removeClass("d-none");
+        $box.find("i, p").hide();
       };
-      firstReader.readAsDataURL(files[0]);
+      reader.readAsDataURL(file);
 
-      // Create thumbnails
-      Array.from(files).forEach((file, index) => {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          const thumb = $(`
-                        <div class="thumbnail-item" style="width: 60px; height: 40px; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; cursor: pointer;">
-                            <img src="${e.target.result}" style="width: 100%; height: 100%; object-fit: cover;">
-                        </div>
-                    `);
-
-          thumb.click(function () {
-            mainBannerImg.attr("src", e.target.result);
-          });
-
-          thumbnailContainer.append(thumb);
-        };
-        reader.readAsDataURL(file);
-      });
-    } else {
-      mainBannerImg.hide();
-      mainBannerPlaceholder.show();
+      // Reset file input
+      $("#banner_images_input").val("");
     }
   });
 
@@ -626,6 +619,23 @@ $(document).ready(function () {
 
   // Image previews
   $("#muthawwif_foto").on("change", previewMuthawwifPhoto);
+
+  // Brosur upload button handler
+  $("#btn-upload-brosur").click(function () {
+    $("#upload_brosur").click();
+  });
+
+  // Display filename when brosur is selected
+  $("#upload_brosur").change(function () {
+    const fileName = this.files[0] ? this.files[0].name : "";
+    if (fileName) {
+      $("#brosur-filename")
+        .text("✓ " + fileName)
+        .removeClass("d-none");
+    } else {
+      $("#brosur-filename").addClass("d-none");
+    }
+  });
 
   // Note: Fasilitas starts empty - user clicks button to add
 
