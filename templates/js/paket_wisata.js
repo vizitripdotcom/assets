@@ -640,41 +640,23 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-  var hargaSingleRupiah = document.getElementById("hargaSingleRupiah");
-  var hargaDoubleRupiah = document.getElementById("hargaDoubleRupiah");
-  var hargaTripleRupiah = document.getElementById("hargaTripleRupiah");
-  var hargaQuadRupiah = document.getElementById("hargaQuadRupiah");
+  var hargaDewasa = document.getElementById("hargaDewasaAnakDisplay");
+  var hargaAnakTanpaBed = document.getElementById("hargaAnakTanpaBedDisplay");
 
-  hargaSingleRupiah.addEventListener("keyup", function (e) {
+  hargaDewasa.addEventListener("keyup", function (e) {
     // Format To Rupiah
-    hargaSingleRupiah.value = formatRupiah(this.value, "Rp. ");
+    hargaDewasa.value = formatRupiah(this.value, "Rp. ");
 
     // Unformat Rupiah
-    $("#harga_single").val(unFormatRupiah(hargaSingleRupiah.value));
+    $("#harga_dewasa_anak").val(unFormatRupiah(hargaDewasa.value));
   });
 
-  hargaDoubleRupiah.addEventListener("keyup", function (e) {
+  hargaAnakTanpaBed.addEventListener("keyup", function (e) {
     // Format To Rupiah
-    hargaDoubleRupiah.value = formatRupiah(this.value, "Rp. ");
+    hargaAnakTanpaBed.value = formatRupiah(this.value, "Rp. ");
 
     // Unformat Rupiah
-    $("#harga_double").val(unFormatRupiah(hargaDoubleRupiah.value));
-  });
-
-  hargaTripleRupiah.addEventListener("keyup", function (e) {
-    // Format To Rupiah
-    hargaTripleRupiah.value = formatRupiah(this.value, "Rp. ");
-
-    // Unformat Rupiah
-    $("#harga_triple").val(unFormatRupiah(hargaTripleRupiah.value));
-  });
-
-  hargaQuadRupiah.addEventListener("keyup", function (e) {
-    // Format To Rupiah
-    hargaQuadRupiah.value = formatRupiah(this.value, "Rp. ");
-
-    // Unformat Rupiah
-    $("#harga_quad").val(unFormatRupiah(hargaQuadRupiah.value));
+    $("#harga_anak_tanpa_bed").val(unFormatRupiah(hargaAnakTanpaBed.value));
   });
 });
 
