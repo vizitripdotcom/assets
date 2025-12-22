@@ -637,6 +637,20 @@ $(document).ready(function () {
   $("#submit-btn").on("click", function () {
     $("#status_published").prop("checked", true);
   });
+
+  // Handle Brosur Upload Button
+  $("#btn-upload-brosur").on("click", function () {
+    $("#upload_brosur").click();
+  });
+
+  // Handle Brosur File Change (Show Filename)
+  $("#upload_brosur").on("change", function () {
+    if (this.files && this.files[0]) {
+      $("#brosur-filename").text(this.files[0].name).removeClass("d-none");
+    } else {
+      $("#brosur-filename").addClass("d-none");
+    }
+  });
 });
 
 $(document).ready(function () {
