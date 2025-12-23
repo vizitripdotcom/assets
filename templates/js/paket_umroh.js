@@ -479,41 +479,68 @@ $(document).ready(function () {
   // Template Selection Handler
   $(document).on("click", ".template-item", function () {
     let templateData = $(this).data("template");
+
+    console.log("=== TEMPLATE SELECTION DEBUG ===");
+    console.log("1. Original templateData:", templateData);
+    console.log("2. Type of templateData:", typeof templateData);
+
     const $targetItem = $("#templateModal").data("targetAccordionItem");
 
     // Parse templateData if it's a string
     if (typeof templateData === "string") {
       try {
         templateData = JSON.parse(templateData);
+        console.log("3. Parsed templateData from string:", templateData);
       } catch (e) {
         console.error("Failed to parse template data:", e);
-        alert("Template data tidak valid");
+        alert("Template data tidak valid - gagal parse JSON");
         return;
       }
     }
 
     // Ensure data field is an array
     if (!templateData || !templateData.data) {
-      alert("Template data tidak valid");
+      console.error("4. Template data or data field is null/undefined");
+      alert("Template data tidak valid - data kosong");
       return;
     }
+
+    console.log("5. templateData.data:", templateData.data);
+    console.log("6. Type of templateData.data:", typeof templateData.data);
 
     // If data is a string, parse it
     if (typeof templateData.data === "string") {
       try {
         templateData.data = JSON.parse(templateData.data);
+        console.log(
+          "7. Parsed templateData.data from string:",
+          templateData.data
+        );
       } catch (e) {
         console.error("Failed to parse template data.data:", e);
-        alert("Template data tidak valid");
+        alert("Template data tidak valid - gagal parse data field");
         return;
       }
     }
 
+    console.log("8. Final templateData.data:", templateData.data);
+    console.log("9. Is array?", Array.isArray(templateData.data));
+
     // Verify data is an array
     if (!Array.isArray(templateData.data)) {
-      alert("Template data format tidak sesuai");
+      console.error(
+        "10. Data is not an array! Type:",
+        typeof templateData.data
+      );
+      console.error("11. Actual value:", templateData.data);
+      alert(
+        `Template data format tidak sesuai - bukan array (${typeof templateData.data})`
+      );
       return;
     }
+
+    console.log("12. Array length:", templateData.data.length);
+    console.log("=== END DEBUG ===");
 
     // If we have a target accordion item, copy ALL items into ONE field
     if ($targetItem && $targetItem.length) {
