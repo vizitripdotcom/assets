@@ -31,7 +31,40 @@ $(document).ready(function () {
   if (typeof window.flashData !== "undefined") {
     processFlashMessages(window.flashData);
   }
+
+  // Auto-scroll sidebar to active item
+  scrollToActiveMenu();
 });
+
+function scrollToActiveMenu() {
+  const activeItem = document.querySelector(".sidebar-menu .menu-link.active");
+  const sidebarMenu = document.querySelector(".sidebar-menu");
+
+  if (activeItem && sidebarMenu) {
+    // Calculate position to center the active item
+    const verifyScroll = () => {
+      const activeRect = activeItem.getBoundingClientRect();
+      const menuRect = sidebarMenu.getBoundingClientRect();
+
+      // Check if item is out of view
+      if (
+        activeRect.top < menuRect.top ||
+        activeRect.bottom > menuRect.bottom
+      ) {
+        activeItem.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "nearest",
+        });
+      }
+    };
+
+    // Run immediately and after a small delay to handle transitions/loading
+    verifyScroll();
+    setTimeout(verifyScroll, 100);
+    setTimeout(verifyScroll, 500);
+  }
+}
 
 function processFlashMessages(data) {
   // Helper to escape HTML to prevent XSS
