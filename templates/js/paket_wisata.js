@@ -727,10 +727,33 @@ $(document).ready(function () {
     // Unformat Rupiah
     $("#harga_anak_tanpa_bed").val(unFormatRupiah(hargaAnakTanpaBed.value));
   });
+
+  // Handle Status Button Clicks
+  $("#btn-save-draft").on("click", function () {
+    $("#status").val("Draft");
+  });
+
+  $("#submit-btn").on("click", function () {
+    $("#status").val("Published");
+  });
+
+  // Handle Brosur Upload Button
+  $("#btn-upload-brosur").on("click", function () {
+    $("#upload_brosur").click();
+  });
+
+  // Handle Brosur File Change (Show Filename)
+  $("#upload_brosur").on("change", function () {
+    if (this.files && this.files[0]) {
+      $("#brosur-filename").text(this.files[0].name).removeClass("d-none");
+    } else {
+      $("#brosur-filename").text("").addClass("d-none");
+    }
+  });
 });
 
-/* Fungsi formatRupiah
- * source: https://malasngoding.github.io/format-rupiah-javascript/
+/**
+ * source: https://jsfiddle.net/syahravi/t8n6jgzt/light/
  */
 function formatRupiah(angka, prefix) {
   var number_string = angka.replace(/[^,\d]/g, "").toString(),
