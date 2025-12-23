@@ -502,9 +502,39 @@ $(document).ready(function () {
       }
     }
 
-    // Verify data is an array
-    if (!Array.isArray(templateData.data)) {
+    // Handle both array and object formats
+    let dataArray;
+    if (Array.isArray(templateData.data)) {
+      dataArray = templateData.data;
+    } else if (
+      typeof templateData.data === "object" &&
+      templateData.data !== null
+    ) {
+      const values = Object.values(templateData.data);
+      dataArray = [];
+      values.forEach((item) => {
+        if (typeof item === "object" && item !== null) {
+          if (item.title || item.description) {
+            dataArray.push(item);
+          } else {
+            Object.values(item).forEach((nested) => {
+              if (
+                typeof nested === "object" &&
+                (nested.title || nested.description)
+              ) {
+                dataArray.push(nested);
+              }
+            });
+          }
+        }
+      });
+    } else {
       alert("Template data format tidak sesuai");
+      return;
+    }
+
+    if (!dataArray || dataArray.length === 0) {
+      alert("Template tidak memiliki data yang valid");
       return;
     }
 
@@ -516,7 +546,7 @@ $(document).ready(function () {
         .val(templateData.header || "");
 
       // Combine ALL descriptions into a numbered list
-      const combinedDescription = templateData.data
+      const combinedDescription = dataArray
         .map((item) => {
           const number = item.title || "";
           const desc = item.description || "";
@@ -533,7 +563,7 @@ $(document).ready(function () {
         Swal.fire({
           icon: "success",
           title: "Berhasil!",
-          text: `${templateData.data.length} item berhasil di-copy dari template "${templateData.header}"`,
+          text: `${dataArray.length} item berhasil di-copy dari template "${templateData.header}"`,
           timer: 2000,
           showConfirmButton: false,
         });
@@ -544,7 +574,7 @@ $(document).ready(function () {
       refundPolicyCount = 0;
 
       // Create refund policy items from template data
-      templateData.data.forEach((item, index) => {
+      dataArray.forEach((item, index) => {
         const policyIndex = refundPolicyCount++;
 
         const html = `

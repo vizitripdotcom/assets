@@ -526,20 +526,49 @@ $(document).ready(function () {
     console.log("8. Final templateData.data:", templateData.data);
     console.log("9. Is array?", Array.isArray(templateData.data));
 
-    // Verify data is an array
-    if (!Array.isArray(templateData.data)) {
-      console.error(
-        "10. Data is not an array! Type:",
-        typeof templateData.data
-      );
-      console.error("11. Actual value:", templateData.data);
-      alert(
-        `Template data format tidak sesuai - bukan array (${typeof templateData.data})`
-      );
+    // Handle both array and object formats
+    let dataArray;
+    if (Array.isArray(templateData.data)) {
+      dataArray = templateData.data;
+      console.log("10. Using array directly");
+    } else if (
+      typeof templateData.data === "object" &&
+      templateData.data !== null
+    ) {
+      console.log("10. Converting object to array");
+      const values = Object.values(templateData.data);
+      // Flatten nested objects
+      dataArray = [];
+      values.forEach((item) => {
+        if (typeof item === "object" && item !== null) {
+          if (item.title || item.description) {
+            dataArray.push(item);
+          } else {
+            Object.values(item).forEach((nested) => {
+              if (
+                typeof nested === "object" &&
+                (nested.title || nested.description)
+              ) {
+                dataArray.push(nested);
+              }
+            });
+          }
+        }
+      });
+      console.log("11. Converted array:", dataArray);
+    } else {
+      console.error("10. Invalid data type:", typeof templateData.data);
+      alert("Template data format tidak sesuai");
       return;
     }
 
-    console.log("12. Array length:", templateData.data.length);
+    if (!dataArray || dataArray.length === 0) {
+      console.error("12. No valid data found");
+      alert("Template tidak memiliki data yang valid");
+      return;
+    }
+
+    console.log("13. Final array:", dataArray);
     console.log("=== END DEBUG ===");
 
     // If we have a target accordion item, copy ALL items into ONE field
@@ -550,7 +579,7 @@ $(document).ready(function () {
         .val(templateData.header || "");
 
       // Combine ALL descriptions into a numbered list
-      const combinedDescription = templateData.data
+      const combinedDescription = dataArray
         .map((item) => {
           const number = item.title || "";
           const desc = item.description || "";
@@ -567,7 +596,7 @@ $(document).ready(function () {
         Swal.fire({
           icon: "success",
           title: "Berhasil!",
-          text: `${templateData.data.length} item berhasil di-copy dari template "${templateData.header}"`,
+          text: `${dataArray.length} item berhasil di-copy dari template "${templateData.header}"`,
           timer: 2000,
           showConfirmButton: false,
         });
@@ -578,7 +607,7 @@ $(document).ready(function () {
       refundPolicyCount = 0;
 
       // Create refund policy items from template data
-      templateData.data.forEach((item, index) => {
+      dataArray.forEach((item, index) => {
         const policyIndex = refundPolicyCount++;
 
         const html = `
