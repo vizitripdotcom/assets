@@ -471,11 +471,40 @@ $(document).ready(function () {
 
   // Template Selection Handler
   $(document).on("click", ".template-item", function () {
-    const templateData = $(this).data("template");
+    let templateData = $(this).data("template");
     const $targetItem = $("#templateModal").data("targetAccordionItem");
 
+    // Parse templateData if it's a string
+    if (typeof templateData === "string") {
+      try {
+        templateData = JSON.parse(templateData);
+      } catch (e) {
+        console.error("Failed to parse template data:", e);
+        alert("Template data tidak valid");
+        return;
+      }
+    }
+
+    // Ensure data field is an array
     if (!templateData || !templateData.data) {
       alert("Template data tidak valid");
+      return;
+    }
+
+    // If data is a string, parse it
+    if (typeof templateData.data === "string") {
+      try {
+        templateData.data = JSON.parse(templateData.data);
+      } catch (e) {
+        console.error("Failed to parse template data.data:", e);
+        alert("Template data tidak valid");
+        return;
+      }
+    }
+
+    // Verify data is an array
+    if (!Array.isArray(templateData.data)) {
+      alert("Template data format tidak sesuai");
       return;
     }
 
