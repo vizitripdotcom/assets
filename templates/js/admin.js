@@ -37,32 +37,29 @@ $(document).ready(function () {
 });
 
 function scrollToActiveMenu() {
-  const activeItem = document.querySelector(".sidebar-menu .menu-link.active");
-  const sidebarMenu = document.querySelector(".sidebar-menu");
+  const $activeItem = $(".sidebar-menu .menu-link.active");
+  const $sidebarMenu = $(".sidebar-menu");
 
-  if (activeItem && sidebarMenu) {
-    // Calculate position to center the active item
-    const verifyScroll = () => {
-      const activeRect = activeItem.getBoundingClientRect();
-      const menuRect = sidebarMenu.getBoundingClientRect();
+  if ($activeItem.length && $sidebarMenu.length) {
+    // Determine target scroll position to center the active item
+    // calculation: (relative position of item inside list) + (current scroll) - (half viewport) + (half item height)
+    const scrollTop =
+      $activeItem.offset().top -
+      $sidebarMenu.offset().top +
+      $sidebarMenu.scrollTop();
+    const centerOffset = $sidebarMenu.height() / 2 - $activeItem.height() / 2;
+    const targetScroll = scrollTop - centerOffset;
 
-      // Check if item is out of view
-      if (
-        activeRect.top < menuRect.top ||
-        activeRect.bottom > menuRect.bottom
-      ) {
-        activeItem.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-          inline: "nearest",
-        });
+    // Animate the scroll
+    $sidebarMenu.animate(
+      {
+        scrollTop: targetScroll,
+      },
+      {
+        duration: 600,
+        easing: "swing", // Default easing, can use 'linear' or others if included
       }
-    };
-
-    // Run immediately and after a small delay to handle transitions/loading
-    verifyScroll();
-    setTimeout(verifyScroll, 100);
-    setTimeout(verifyScroll, 500);
+    );
   }
 }
 
