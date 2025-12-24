@@ -441,9 +441,10 @@ $(document).ready(function () {
     .off("click")
     .on("click", function () {
       // Validate before moving to next tab
-      if (!validateCurrentTab()) {
-        return false;
-      }
+
+      // if (!validateCurrentTab()) {
+      //   return false;
+      // }
 
       if (currentTab < totalTabs - 1) {
         showTab(currentTab + 1);
