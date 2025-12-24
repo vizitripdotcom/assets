@@ -739,41 +739,28 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-  var hargaSingleRupiah = document.getElementById("hargaSingleRupiah");
-  var hargaDoubleRupiah = document.getElementById("hargaDoubleRupiah");
-  var hargaTripleRupiah = document.getElementById("hargaTripleRupiah");
-  var hargaQuadRupiah = document.getElementById("hargaQuadRupiah");
+  const priceInputs = [
+    { input: "hargaSingleRupiah", hidden: "harga_single" },
+    { input: "hargaDoubleRupiah", hidden: "harga_double" },
+    { input: "hargaTripleRupiah", hidden: "harga_triple" },
+    { input: "hargaQuadRupiah", hidden: "harga_quad" },
+  ];
 
-  hargaSingleRupiah.addEventListener("keyup", function (e) {
-    // Format To Rupiah
-    hargaSingleRupiah.value = formatRupiah(this.value, "Rp. ");
+  priceInputs.forEach((item) => {
+    const inputEl = document.getElementById(item.input);
+    const hiddenEl = document.getElementById(item.hidden);
 
-    // Unformat Rupiah
-    $("#harga_single").val(unFormatRupiah(hargaSingleRupiah.value));
-  });
+    $("#" + item.input).val("Rp. " + hiddenEl.value);
 
-  hargaDoubleRupiah.addEventListener("keyup", function (e) {
-    // Format To Rupiah
-    hargaDoubleRupiah.value = formatRupiah(this.value, "Rp. ");
-
-    // Unformat Rupiah
-    $("#harga_double").val(unFormatRupiah(hargaDoubleRupiah.value));
-  });
-
-  hargaTripleRupiah.addEventListener("keyup", function (e) {
-    // Format To Rupiah
-    hargaTripleRupiah.value = formatRupiah(this.value, "Rp. ");
-
-    // Unformat Rupiah
-    $("#harga_triple").val(unFormatRupiah(hargaTripleRupiah.value));
-  });
-
-  hargaQuadRupiah.addEventListener("keyup", function (e) {
-    // Format To Rupiah
-    hargaQuadRupiah.value = formatRupiah(this.value, "Rp. ");
-
-    // Unformat Rupiah
-    $("#harga_quad").val(unFormatRupiah(hargaQuadRupiah.value));
+    if (inputEl && hiddenEl) {
+      inputEl.addEventListener("keyup", function (e) {
+        // Format To Rupiah
+        this.value = formatRupiah(this.value, "Rp. ");
+        // Unformat Rupiah to hidden input
+        hiddenEl.value = unFormatRupiah(this.value);
+        inputEl.value = formatRupiah(this.value, "Rp. ");
+      });
+    }
   });
 });
 
