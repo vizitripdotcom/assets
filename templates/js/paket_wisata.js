@@ -700,11 +700,11 @@ $(document).ready(function () {
 
   // Handle Status Button Clicks
   $("#btn-save-draft").on("click", function () {
-    $("#status_draft").prop("checked", true);
+    $("#status").val("Draft");
   });
 
   $("#submit-btn").on("click", function () {
-    $("#status_published").prop("checked", true);
+    $("#status").val("Published");
   });
 });
 
