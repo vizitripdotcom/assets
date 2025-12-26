@@ -782,3 +782,18 @@ function formatRupiah(angka, prefix) {
 function unFormatRupiah(rupiah) {
   return rupiah.replace(/Rp\.?\s?/g, "").replace(/\./g, "");
 }
+
+// Sticky Header Functionality
+$(document).ready(function () {
+  const stickyHeader = $("#sticky-header");
+
+  if (stickyHeader.length) {
+    $(window).on("scroll", function () {
+      if ($(window).scrollTop() > 50) {
+        stickyHeader.addClass("scrolled");
+      } else {
+        stickyHeader.removeClass("scrolled");
+      }
+    });
+  }
+});
