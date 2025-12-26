@@ -42,16 +42,7 @@ $(document).ready(function () {
 
     // Update buttons
     $("#prev-tab").toggle(n !== 0);
-
-    if (n === totalTabs - 1) {
-      $("#next-tab").addClass("d-none");
-      $("#submit-btn").removeClass("d-none");
-      $("#btn-save-draft").removeClass("d-none");
-    } else {
-      $("#next-tab").removeClass("d-none");
-      $("#submit-btn").addClass("d-none");
-      $("#btn-save-draft").addClass("d-none");
-    }
+    $("#next-tab").toggle(n !== totalTabs - 1);
   }
 
   // Fasilitas Termasuk
@@ -778,3 +769,18 @@ function formatRupiah(angka, prefix) {
 function unFormatRupiah(rupiah) {
   return rupiah.replace(/Rp\.?\s?/g, "").replace(/\./g, "");
 }
+
+// Sticky Header Functionality
+$(document).ready(function () {
+  const stickyHeader = $("#sticky-header");
+
+  if (stickyHeader.length) {
+    $(window).on("scroll", function () {
+      if ($(window).scrollTop() > 100) {
+        stickyHeader.addClass("scrolled");
+      } else {
+        stickyHeader.removeClass("scrolled");
+      }
+    });
+  }
+});

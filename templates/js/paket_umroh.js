@@ -789,7 +789,7 @@ $(document).ready(function () {
 
   if (stickyHeader.length) {
     $(window).on("scroll", function () {
-      if ($(window).scrollTop() > 50) {
+      if ($(window).scrollTop() > 100) {
         stickyHeader.addClass("scrolled");
       } else {
         stickyHeader.removeClass("scrolled");

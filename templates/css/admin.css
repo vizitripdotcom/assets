@@ -270,11 +270,13 @@ body {
   font-weight: 700;
   color: var(--dark-color);
   margin: 0;
+  padding-left: 4px;
 }
 
 .page-subtitle {
   color: #64748b;
   margin: 0.5rem 0 0;
+  padding-left: 8px;
 }
 
 .card {
