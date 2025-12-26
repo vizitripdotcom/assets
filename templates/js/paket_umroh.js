@@ -42,16 +42,7 @@ $(document).ready(function () {
 
     // Update buttons
     $("#prev-tab").toggle(n !== 0);
-
-    if (n === totalTabs - 1) {
-      $("#next-tab").addClass("d-none");
-      $("#submit-btn").removeClass("d-none");
-      $("#btn-save-draft").removeClass("d-none");
-    } else {
-      $("#next-tab").removeClass("d-none");
-      $("#submit-btn").addClass("d-none");
-      $("#btn-save-draft").addClass("d-none");
-    }
+    $("#next-tab").toggle(n !== totalTabs - 1);
   }
 
   // Fasilitas Termasuk
