@@ -119,8 +119,7 @@ $(document).ready(function () {
                         <input type="text" 
                               class="form-control" 
                               name="itinerary[${index}][hari_header]" 
-                              placeholder="Keterangan Kegiatan" 
-                              required>
+                              placeholder="Keterangan Kegiatan">
                     </div>
                     <button type="button" class="btn btn-sm btn-danger btn-remove-itinerary ms-2">
                         <i class="fas fa-trash"></i> Hapus
