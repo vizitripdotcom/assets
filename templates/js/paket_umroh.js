@@ -50,7 +50,8 @@ $(document).ready(function () {
     const $container = $("#fasilitas-termasuk-container");
     if (!$container.length) return;
 
-    const index = fasilitasTermasukCount++;
+    // Calculate index from actual number of items
+    const index = $("#fasilitas-termasuk-container .fasilitas-item").length;
 
     const html = `
             <div class="fasilitas-item mb-2" data-index="${index}">
@@ -66,6 +67,9 @@ $(document).ready(function () {
         `;
 
     $container.append(html);
+    fasilitasTermasukCount = $(
+      "#fasilitas-termasuk-container .fasilitas-item"
+    ).length;
   }
 
   // Fasilitas Belum Termasuk
@@ -74,7 +78,9 @@ $(document).ready(function () {
     if (!$container.length) return;
 
     const baseIndex = 1000;
-    const index = baseIndex + fasilitasBelumCount++;
+    // Calculate from actual items count
+    const currentCount = $("#fasilitas-belum-container .fasilitas-item").length;
+    const index = baseIndex + currentCount;
 
     const html = `
             <div class="fasilitas-item mb-2" data-index="${index}">
@@ -90,6 +96,9 @@ $(document).ready(function () {
         `;
 
     $container.append(html);
+    fasilitasBelumCount = $(
+      "#fasilitas-belum-container .fasilitas-item"
+    ).length;
   }
 
   // Add Itinerary
@@ -97,7 +106,9 @@ $(document).ready(function () {
     const $container = $("#itinerary-container");
     if (!$container.length) return;
 
-    const index = itineraryCount++;
+    // Calculate index from actual number of items in DOM
+    const currentItemCount = $(".itinerary-item").length;
+    const index = currentItemCount;
     const dayNumber = index + 1;
 
     const html = `
@@ -123,18 +134,43 @@ $(document).ready(function () {
         `;
 
     $container.append(html);
+
+    // Update counter to match
+    itineraryCount = $(".itinerary-item").length;
   }
 
   // Renumber Itinerary
   function renumberItinerary() {
     $(".itinerary-item").each(function (index) {
       const dayNumber = index + 1;
+
+      // Update data-index attribute
+      $(this).attr("data-index", index);
+
+      // Update display text
       $(this).find(".card-header span").text(`Hari ${dayNumber}`);
+
+      // Update hidden input value
       $(this).find('input[type="hidden"]').val(dayNumber);
+
+      // Update hidden input name
+      $(this)
+        .find('input[type="hidden"]')
+        .attr("name", `itinerary[${index}][hari]`);
+
+      // Update hari_header input name
+      $(this)
+        .find('input[name*="hari_header"]')
+        .attr("name", `itinerary[${index}][hari_header]`);
+
+      // Update textarea name and placeholder
       $(this)
         .find("textarea")
+        .attr("name", `itinerary[${index}][deskripsi]`)
         .attr("placeholder", `Deskripsi aktivitas hari ${dayNumber}...`);
     });
+
+    // Update counter to match actual count
     itineraryCount = $(".itinerary-item").length;
   }
 
@@ -142,9 +178,39 @@ $(document).ready(function () {
   function renumberRefundPolicy() {
     $(".refund-policy-item").each(function (index) {
       const policyNumber = index + 1;
-      $(this).find(".accordion-button").text(`Kebijakan #${policyNumber}`);
+
+      // Update data-index
       $(this).attr("data-index", index);
+
+      // Get the actual title from input (if exists)
+      const $titleInput = $(this).find('input[name*="judul_kebijakan"]');
+      const titleValue = $titleInput.val();
+
+      // Update accordion button text
+      if (titleValue && titleValue.trim() !== "") {
+        // Use actual title if available
+        $(this).find(".accordion-button").text(titleValue);
+      } else {
+        // Use default numbering for new/empty items
+        $(this).find(".accordion-button").text(`Kebijakan #${policyNumber}`);
+      }
+
+      // Update input names
+      $titleInput.attr("name", `refund[${index}][judul_kebijakan]`);
+      $(this)
+        .find('textarea[name*="detail_kebijakan"]')
+        .attr("name", `refund[${index}][detail_kebijakan]`);
+
+      // Update accordion IDs
+      $(this).find(".accordion-header").attr("id", `refund-heading-${index}`);
+      $(this)
+        .find(".accordion-button")
+        .attr("data-bs-target", `#refund-collapse-${index}`);
+      $(this)
+        .find(".accordion-collapse")
+        .attr("id", `refund-collapse-${index}`);
     });
+
     refundPolicyCount = $(".refund-policy-item").length;
   }
 
@@ -153,7 +219,8 @@ $(document).ready(function () {
     const $container = $("#refundAccordion");
     if (!$container.length) return;
 
-    const index = refundPolicyCount++;
+    // Calculate index from actual number of items
+    const index = $(".refund-policy-item").length;
 
     const html = `
             <div class="accordion-item refund-policy-item" data-index="${index}">
@@ -188,6 +255,7 @@ $(document).ready(function () {
         `;
 
     $container.append(html);
+    refundPolicyCount = $(".refund-policy-item").length;
   }
 
   // Add Jadwal (Legacy/Optional)
@@ -195,7 +263,8 @@ $(document).ready(function () {
     const $container = $("#jadwal-container");
     if (!$container.length) return;
 
-    const index = jadwalCount++;
+    // Calculate index from actual number of items
+    const index = $(".jadwal-item").length;
 
     const html = `
             <div class="card mb-3 jadwal-item" data-index="${index}">
@@ -247,6 +316,7 @@ $(document).ready(function () {
         `;
 
     $container.append(html);
+    jadwalCount = $(".jadwal-item").length;
   }
 
   // Image Preview for Muthawwif
@@ -699,6 +769,19 @@ $(document).ready(function () {
 
   $(document).on("click", ".btn-remove-jadwal", function () {
     $(this).closest(".jadwal-item").remove();
+  });
+
+  // Update accordion button text when refund title input changes
+  $(document).on("input", 'input[name*="judul_kebijakan"]', function () {
+    const $accordionItem = $(this).closest(".refund-policy-item");
+    const titleValue = $(this).val();
+
+    if (titleValue && titleValue.trim() !== "") {
+      $accordionItem.find(".accordion-button").text(titleValue);
+    } else {
+      const index = $accordionItem.index();
+      $accordionItem.find(".accordion-button").text(`Kebijakan #${index + 1}`);
+    }
   });
 
   // Image previews
