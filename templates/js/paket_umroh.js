@@ -880,3 +880,104 @@ $(document).ready(function () {
     });
   }
 });
+
+// AJAX Handler for Maskapai Selection
+$(document).ready(function () {
+  // Handle Maskapai Berangkat (Departure) Selection
+  $("#maskapai_berangkat").on("change", function () {
+    const maskapaiId = $(this).val();
+
+    if (maskapaiId) {
+      fetchMaskapaiDetails(maskapaiId, "berangkat");
+    }
+  });
+
+  // Handle Maskapai Pulang (Return) Selection
+  $("#maskapai_pulang").on("change", function () {
+    const maskapaiId = $(this).val();
+
+    if (maskapaiId) {
+      fetchMaskapaiDetails(maskapaiId, "pulang");
+    }
+  });
+
+  // Function to fetch maskapai details via AJAX
+  function fetchMaskapaiDetails(maskapaiId, type) {
+    $.ajax({
+      url: baseUrl + "master/maskapai/get-maskapai-details/" + maskapaiId, // Adjust this endpoint as needed
+      method: "GET",
+      dataType: "json",
+      beforeSend: function () {
+        // Optional: Show loading indicator
+        console.log("Fetching maskapai details for ID:", maskapaiId);
+      },
+      success: function (response) {
+        console.log("Maskapai details response:", response);
+
+        // Handle the response data here
+        // The API returns data directly, not wrapped in {success: true, data: ...}
+        if (response && response.id) {
+          const maskapai = response;
+
+          console.log("Maskapai details:", maskapai);
+
+          // Check if airline has transit and show/hide the transit field
+          if (maskapai.is_transit === "transit") {
+            $("#transit_" + type).show();
+          } else {
+            $("#transit_" + type).hide();
+          }
+
+          // Optional: Show alert with maskapai info (you can remove this if not needed)
+          // if (typeof Swal !== "undefined") {
+          //   Swal.fire({
+          //     icon: "info",
+          //     title: "Detail Maskapai",
+          //     html: `
+          //       <div class="text-start">
+          //         <p><strong>Nama:</strong> ${maskapai.nama_maskapai || "-"}</p>
+          //         <p><strong>Transit:</strong> ${maskapai.is_transit || "-"}</p>
+          //       </div>
+          //     `,
+          //     confirmButtonText: "OK",
+          //   });
+          // }
+        } else {
+          console.warn("No maskapai data found in response");
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("Error fetching maskapai details:", error);
+
+        if (typeof Swal !== "undefined") {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Gagal mengambil detail maskapai. Silakan coba lagi.",
+            confirmButtonText: "OK",
+          });
+        } else {
+          alert("Gagal mengambil detail maskapai");
+        }
+      },
+    });
+  }
+
+  // Initialize transit fields on page load (for edit form)
+  function initializeTransitFields() {
+    // Check maskapai berangkat
+    const maskapaiBerangkatId = $("#maskapai_berangkat").val();
+    if (maskapaiBerangkatId) {
+      fetchMaskapaiDetails(maskapaiBerangkatId, "berangkat");
+    }
+
+    // Check maskapai pulang
+    const maskapaiPulangId = $("#maskapai_pulang").val();
+    if (maskapaiPulangId) {
+      fetchMaskapaiDetails(maskapaiPulangId, "pulang");
+    }
+  }
+
+  // Call initialization when document is ready
+  initializeTransitFields();
+});
