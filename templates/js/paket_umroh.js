@@ -8,7 +8,7 @@ $(document).ready(function () {
     width: "100%",
   });
 
-  $("#maskapai_berangkat").select2({
+  $("#maskapai_berangkat, #maskapai_pulang").select2({
     theme: "bootstrap-5",
     width: "100%",
     placeholder: "Pilih Maskapai",
