@@ -8,6 +8,43 @@ $(document).ready(function () {
     width: "100%",
   });
 
+  $("#maskapai_berangkat").select2({
+    theme: "bootstrap-5",
+    width: "100%",
+    placeholder: "Pilih Maskapai",
+    allowClear: true,
+    templateResult: formatOption,
+    templateSelection: formatSelection,
+    escapeMarkup: function (markup) {
+      return markup;
+    },
+  });
+
+  function formatOption(option) {
+    if (!option.id) {
+      return option.text;
+    }
+
+    const title = $(option.element).data("title");
+    const subtitle = $(option.element).data("subtitle");
+
+    return `
+          <div>
+              ${title}<br />
+              <small style="color:#666">${subtitle}</small>
+          </div>
+      `;
+  }
+
+  function formatSelection(option) {
+    if (!option.id) {
+      return option.text;
+    }
+
+    const title = $(option.element).data("title");
+    return `${title}`;
+  }
+
   // Initialize Flatpickr for multiple dates
   flatpickr("#tanggal_keberangkatan", {
     mode: "multiple",
