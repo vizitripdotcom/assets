@@ -8,6 +8,43 @@ $(document).ready(function () {
     width: "100%",
   });
 
+  $("#maskapai_berangkat, #maskapai_pulang").select2({
+    theme: "bootstrap-5",
+    width: "100%",
+    placeholder: "Pilih Maskapai",
+    allowClear: true,
+    templateResult: formatOption,
+    templateSelection: formatSelection,
+    escapeMarkup: function (markup) {
+      return markup;
+    },
+  });
+
+  function formatOption(option) {
+    if (!option.id) {
+      return option.text;
+    }
+
+    const title = $(option.element).data("title");
+    const subtitle = $(option.element).data("subtitle");
+
+    return `
+          <div>
+              ${title}<br />
+              <small style="color:#666">${subtitle}</small>
+          </div>
+      `;
+  }
+
+  function formatSelection(option) {
+    if (!option.id) {
+      return option.text;
+    }
+
+    const title = $(option.element).data("title");
+    return `${title}`;
+  }
+
   // Initialize Flatpickr for multiple dates
   flatpickr("#tanggal_keberangkatan", {
     mode: "multiple",
@@ -865,11 +902,8 @@ $(document).ready(function () {
           console.log("Maskapai details:", maskapai);
 
           // Check if airline has transit and show/hide the transit field
-          if (maskapai.is_transit === "transit") {
-            $("#transit_" + type).show();
-          } else {
-            $("#transit_" + type).hide();
-          }
+          $("#transit_" + type + "_container").show();
+          $("#transit_" + type).val(maskapai.durasi_transit_info);
 
           // Optional: Show alert with maskapai info (you can remove this if not needed)
           // if (typeof Swal !== "undefined") {
