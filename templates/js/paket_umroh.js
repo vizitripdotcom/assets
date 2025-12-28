@@ -956,14 +956,11 @@ $(document).ready(function () {
         if (response && response.id) {
           const maskapai = response;
 
-          console.log("Maskapai details:", maskapai);
+          console.log("Maskapai details:", maskapai, "Type: ", type);
 
           // Check if airline has transit and show/hide the transit field
-          if (maskapai.is_transit === "transit") {
-            $("#transit_" + type).show();
-          } else {
-            $("#transit_" + type).hide();
-          }
+          $("#transit_" + type + "_container").show();
+          $("#transit_" + type).val(maskapai.durasi_transit_info);
 
           // Optional: Show alert with maskapai info (you can remove this if not needed)
           // if (typeof Swal !== "undefined") {
