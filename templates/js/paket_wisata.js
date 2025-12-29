@@ -901,9 +901,17 @@ $(document).ready(function () {
 
           console.log("Maskapai details:", maskapai);
 
-          // Check if airline has transit and show/hide the transit field
-          $("#transit_" + type + "_container").show();
-          $("#transit_" + type).val(maskapai.durasi_transit_info);
+          if (maskapai.is_transit === "transit") {
+            // Check if airline has transit and show/hide the transit field
+            $("#transit_" + type + "_container").show();
+            $("#transit_" + type + "_container_2").show();
+
+            $("#kota_transit_" + type).val(maskapai.kota_nama);
+            $("#durasi_transit_" + type).val(maskapai.durasi_transit);
+          } else {
+            $("#transit_" + type + "_container").hide();
+            $("#transit_" + type + "_container_2").show();
+          }
 
           // Optional: Show alert with maskapai info (you can remove this if not needed)
           // if (typeof Swal !== "undefined") {
